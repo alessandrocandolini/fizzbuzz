@@ -1,0 +1,14 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "fizzbuzz:lib"
+
+    - path: "./app/Main.hs"
+      component: "fizzbuzz:exe:fizzbuzz-exe"
+
+    - path: "./app/Paths_haskell_toy_example.hs"
+      component: "fizzbuzz:exe:fizzbuzz-exe"
+
+    - path: "./test"
+      component: "fizzbuzz:test:fizzbuzz-test"
+
