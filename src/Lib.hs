@@ -2,10 +2,14 @@ module Lib where
 
 import Control.Monad.Except (ExceptT (..), mfilter, runExceptT)
 import Data.Either.Combinators (maybeToRight)
+import qualified System.Exit as S
 import qualified Text.Read as T
 
 program :: IO ()
-program = runExceptT program' >>= either (putStrLn . renderError) output
+program = runExceptT program' >>= either outputError' output'
+  where
+    outputError' s = outputError s >> S.exitFailure
+    output' s = output s >> S.exitSuccess
 
 program' :: ExceptT Error IO [String]
 program' = do
@@ -35,9 +39,7 @@ calculate :: Integer -> [String]
 calculate n = fmap (render . fizzBuzz) [1 .. n]
 
 input :: IO String
-input = do
-  putStrLn "insert a positive number"
-  getLine
+input = putStrLn "insert a positive number" >> getLine
 
 validateInput :: String -> Either Error Integer
 validateInput s = validateNumber s >>= validatePositive
@@ -47,3 +49,6 @@ validateInput s = validateNumber s >>= validatePositive
 
 output :: [String] -> IO ()
 output = mapM_ putStrLn
+
+outputError :: Error -> IO ()
+outputError = putStrLn . renderError
