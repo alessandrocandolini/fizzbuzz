@@ -1,5 +1,7 @@
 # fizzbuzz
 
+Implementation of the fizzbuzz exercise, showcasing modelling with types etc
+
 ## How to build and run locally
 
 The project uses the [Haskell tool stack](https://docs.haskellstack.org/en/stable/README/).
@@ -16,11 +18,24 @@ which is equivalent to
 ```
 stack build --test
 ```
+
+To run tests with coverage
+```
+stack test --coverage
+```
+which generates an html report. 
+
 To run the executable,
 ```
 stack exec fizzbuzz-exe
 ```
-For a faster feedback loop,
+or
+```
+stack exec fizzbuzz-exe
+```
+(the latter is used when you have to pass arguments to the program)
+
+For faster feedback loop,
 ```
 stack test --fast --file-watch
 ```
