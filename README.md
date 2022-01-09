@@ -1,5 +1,7 @@
 # fizzbuzz
 
+[![CI](https://github.com/alessandrocandolini/fizzbuzz/actions/workflows/ci.yml/badge.svg)](https://github.com/alessandrocandolini/fizzbuzz/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/alessandrocandolini/fizzbuzz/branch/main/graph/badge.svg?token=LXFQ53067Y)](https://codecov.io/gh/alessandrocandolini/fizzbuzz)
+
 Implementation of the fizzbuzz exercise, showcasing modelling with types etc
 
 ## How to build and run locally
