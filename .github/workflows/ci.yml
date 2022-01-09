@@ -42,7 +42,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        stack build --system-ghc --test --bench --no-run-tests --no-run-benchmarks --only-dependencies
+        stack build --system-ghc --test --no-run-tests --only-dependencies
 
     - name: Run tests with coverage
       run: |
@@ -50,7 +50,7 @@ jobs:
 
     - name: Build
       run: |
-        stack build --system-ghc --test --bench --no-run-tests --no-run-benchmarks
+        stack build --system-ghc --test --no-run-tests
 
     - name: Generate coverage report
       uses: 8c6794b6/hpc-codecov-action@v2
