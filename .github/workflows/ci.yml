@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  stack:
 
     name: ${{ matrix.os }} / ghc ${{ matrix.ghc }}
     runs-on: ${{ matrix.os }}
@@ -23,6 +23,8 @@ jobs:
         ghc: ["8.10.7"]
 
     steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
 
     - name: Setup Haskell Stack
       uses: haskell/actions/setup@v1
@@ -36,9 +38,6 @@ jobs:
       with:
         path: ~/.stack
         key: ${{ runner.os }}-${{ matrix.ghc }}-stack
-
-    - name: Checkout repo
-      uses: actions/checkout@v2
 
     - name: Install dependencies
       run: |
