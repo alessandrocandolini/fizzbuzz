@@ -8,6 +8,7 @@ import Data.Maybe (fromMaybe, isJust, isNothing)
 import Lib
 import Test.Hspec
 import Test.Hspec.QuickCheck
+import Test.QuickCheck (NonEmptyList (NonEmpty))
 import Test.QuickCheck.Poly (B (B))
 import Test.QuickCheck.Property
 
@@ -28,6 +29,9 @@ spec = describe "FizzBuzz" $ do
 
     prop "buzz only if it's multiple of 5 and not of 3" $
       \l -> fizzBuzz l == Buzz ==> l `mod` 3 /= 0 && l `mod` 5 == 0
+
+    prop "it's other if and only if it's not multiple neither of 3 or 5" $
+      \l -> fizzBuzz l == Other l ==> l `mod` 3 /= 0 && l `mod` 5 /= 0
 
   describe "generateList" $ do
     prop "generates a list whenever the input is greater than 0" $
@@ -56,3 +60,8 @@ spec = describe "FizzBuzz" $ do
 
     prop "fails if the string is negative" $
       \l -> l <= 0 ==> businessLogic (show (l :: Integer)) == Left NegativeNumber
+
+    it "success example" $
+      let expected :: N.NonEmpty FizzBuzz
+          expected = (Other 1) N.:| [(Other 2), Fizz, (Other 4), Buzz, Fizz, (Other 7), (Other 8), Fizz, Buzz, (Other 11), Fizz, (Other 13), (Other 14), FizzBuzz]
+       in businessLogic "15" `shouldBe` Right expected

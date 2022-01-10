@@ -11,7 +11,7 @@ import qualified Text.Read as T
 
 data FizzBuzz = Fizz | Buzz | FizzBuzz | Other Integer deriving (Eq, Show)
 
-data Error = NaN | NegativeNumber deriving (Eq, Show, Ord)
+data Error = NaN | NegativeNumber deriving (Eq, Show)
 
 fizzBuzz :: Integer -> FizzBuzz
 fizzBuzz n
