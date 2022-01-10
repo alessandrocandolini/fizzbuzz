@@ -72,3 +72,9 @@ spec = describe "FizzBuzz" $ do
       let expected :: String
           expected = intercalate "\n" ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]
        in program' "15" `shouldBe` expected
+
+    it "NaN program" $
+      program' "abc" `shouldBe` "insert a valid number"
+
+    it "Negative number program" $
+      program' "0" `shouldBe` "insert a number > 0"

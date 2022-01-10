@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+
 module Lib where
 
 import Control.Monad.Except
@@ -44,9 +46,15 @@ source = putStrLn "insert a positive number" >> getLine
 presentation :: Either Error (NonEmpty FizzBuzz) -> String
 presentation = either renderError renderSuccess
 
+errorNaN :: String
+errorNaN = "insert a valid number"
+
+errorNegativeNumber :: String
+errorNegativeNumber = "insert a number > 0"
+
 renderError :: Error -> String
-renderError NaN = "insert a valid number"
-renderError NegativeNumber = "insert a number > 0"
+renderError NaN = errorNaN
+renderError NegativeNumber = errorNegativeNumber
 
 renderSuccess :: NonEmpty FizzBuzz -> String
 renderSuccess = intercalate "\n" . N.toList . fmap render
