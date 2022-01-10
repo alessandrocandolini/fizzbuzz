@@ -2,24 +2,13 @@ module Lib where
 
 import Control.Monad.Except
 import Data.Either.Combinators (maybeToRight)
+import Data.List (intercalate)
+import Data.List.NonEmpty (NonEmpty)
+import qualified Data.List.NonEmpty as N
 import qualified System.Exit as S
 import qualified Text.Read as T
 
-program :: IO ()
-program = runExceptT program' >>= either outputError' output'
-  where
-    outputError' s = outputError s >> S.exitFailure
-    output' s = output s >> S.exitSuccess
-
-program' :: ExceptT Error IO [String]
-program' = fmap presentation source
-
 data FizzBuzz = Fizz | Buzz | FizzBuzz | Other Integer deriving (Eq, Show)
-
-newtype Seed = Seed Integer deriving (Eq, Show)
-
-seed :: Integer -> Maybe Seed
-seed = fmap Seed . mfilter (> 0) . Just
 
 data Error = NaN | NegativeNumber deriving (Eq, Show, Ord)
 
@@ -34,32 +23,57 @@ render :: FizzBuzz -> String
 render (Other n) = show n
 render s = show s
 
+generateList :: Integer -> Maybe (N.NonEmpty Integer)
+generateList = (=<<) N.nonEmpty . fmap (\n -> [1 .. n]) . mfilter (> 0) . Just
+
+businessLogic :: String -> Either Error (NonEmpty FizzBuzz)
+businessLogic = fmap (fmap fizzBuzz) . (=<<) (maybeToRight NegativeNumber . generateList) . maybeToRight NaN . T.readMaybe
+
+source :: IO String
+source = putStrLn "insert a positive number" >> getLine
+
+{-
+ Approach 1
+
+  - Pros: testability, I can test almost the entire program as a single error
+  - Cons: untyped, and we have already run the error effect, so we can't add further modifications only in case of error (eg, exitSuccess or exitFailure)
+
+-}
+
+presentation :: Either Error (NonEmpty FizzBuzz) -> String
+presentation = either renderError renderSuccess
+
 renderError :: Error -> String
 renderError NaN = "insert a valid number"
 renderError NegativeNumber = "insert a number > 0"
 
-business :: Seed -> [FizzBuzz]
-business (Seed n) = fmap fizzBuzz [1 .. n]
+renderSuccess :: NonEmpty FizzBuzz -> String
+renderSuccess = intercalate "\n" . N.toList . fmap render
 
-presentation :: Seed -> [String]
-presentation = fmap render . business
+program' :: String -> String
+program' = presentation . businessLogic
 
-rawSource :: IO String
-rawSource = putStrLn "insert a positive number" >> getLine
+{-
+ Approach 2
 
-source :: ExceptT Error IO Seed
-source = ExceptT $ fmap parseAndValidate rawSource
+-}
+program'' :: String -> IO ()
+program'' = either outputError' (output' . fmap render) . businessLogic
   where
-    parseAndValidate = (=<<) validate . parse
+    outputError' s = outputError s >> S.exitFailure
+    output' s = output s >> S.exitSuccess
 
-parse :: String -> Either Error Integer
-parse = maybeToRight NaN . T.readMaybe
-
-validate :: Integer -> Either Error Seed
-validate = maybeToRight NegativeNumber . seed
-
-output :: [String] -> IO ()
+output :: NonEmpty String -> IO ()
 output = mapM_ putStrLn
 
 outputError :: Error -> IO ()
 outputError = putStrLn . renderError
+
+program1 :: IO ()
+program1 = (=<<) putStrLn $ fmap program' source
+
+program2 :: IO ()
+program2 = (=<<) program'' source
+
+program :: IO ()
+program = program2
