@@ -1,8 +1,6 @@
-{-# OPTIONS_GHC -Wno-missing-signatures #-}
-
 module Lib where
 
-import Control.Monad.Except
+import Control.Monad.Except (mfilter)
 import Data.Either.Combinators (maybeToRight)
 import Data.Graph (edges)
 import Data.List (intercalate)

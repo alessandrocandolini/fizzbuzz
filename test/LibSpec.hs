@@ -7,11 +7,18 @@ import Data.List.NonEmpty (sort)
 import qualified Data.List.NonEmpty as N
 import Data.Maybe (fromMaybe, isJust, isNothing)
 import Lib
-import Test.Hspec
-import Test.Hspec.QuickCheck
+  ( Error (NaN, NegativeNumber),
+    FizzBuzz (..),
+    businessLogic,
+    fizzBuzz,
+    generateList,
+    program',
+  )
+import Test.Hspec (Spec, describe, it, shouldBe)
+import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck (NonEmptyList (NonEmpty))
 import Test.QuickCheck.Poly (B (B))
-import Test.QuickCheck.Property
+import Test.QuickCheck.Property ((==>))
 
 spec :: Spec
 spec = describe "FizzBuzz" $ do
