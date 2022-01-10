@@ -5,7 +5,7 @@ import Data.Either (isRight)
 import Data.List (intercalate)
 import Data.List.NonEmpty (sort)
 import qualified Data.List.NonEmpty as N
-import Data.Maybe (fromMaybe, isJust, isNothing)
+import Data.Maybe (isJust, isNothing)
 import Lib
   ( Error (NaN, NegativeNumber),
     FizzBuzz (..),
@@ -16,8 +16,6 @@ import Lib
   )
 import Test.Hspec (Spec, describe, it, shouldBe)
 import Test.Hspec.QuickCheck (prop)
-import Test.QuickCheck (NonEmptyList (NonEmpty))
-import Test.QuickCheck.Poly (B (B))
 import Test.QuickCheck.Property ((==>))
 
 spec :: Spec

@@ -1,8 +1,7 @@
 module Lib where
 
-import Control.Monad.Except (mfilter)
+import Control.Monad (mfilter)
 import Data.Either.Combinators (maybeToRight)
-import Data.Graph (edges)
 import Data.List (intercalate)
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as N
