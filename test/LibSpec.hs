@@ -2,6 +2,7 @@ module LibSpec where
 
 import Data.Char (isDigit)
 import Data.Either (isRight)
+import Data.List (intercalate)
 import Data.List.NonEmpty (sort)
 import qualified Data.List.NonEmpty as N
 import Data.Maybe (fromMaybe, isJust, isNothing)
@@ -63,5 +64,11 @@ spec = describe "FizzBuzz" $ do
 
     it "success example" $
       let expected :: N.NonEmpty FizzBuzz
-          expected = (Other 1) N.:| [(Other 2), Fizz, (Other 4), Buzz, Fizz, (Other 7), (Other 8), Fizz, Buzz, (Other 11), Fizz, (Other 13), (Other 14), FizzBuzz]
+          expected = Other 1 N.:| [Other 2, Fizz, Other 4, Buzz, Fizz, Other 7, Other 8, Fizz, Buzz, Other 11, Fizz, Other 13, Other 14, FizzBuzz]
        in businessLogic "15" `shouldBe` Right expected
+
+  describe "program'" $ do
+    it "success example" $
+      let expected :: String
+          expected = intercalate "\n" ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]
+       in program' "15" `shouldBe` expected
