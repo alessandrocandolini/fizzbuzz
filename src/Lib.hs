@@ -2,6 +2,7 @@ module Lib where
 
 import Control.Monad.Except
 import Data.Either.Combinators (maybeToRight)
+import Data.Graph (edges)
 import Data.List (intercalate)
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as N
@@ -55,6 +56,10 @@ program' = presentation . businessLogic
 
 {-
  Approach 2
+  - Pros: we run the error effect at the edges
+  - Cons: less testable, because now we return IO
+
+ An interemdiate approach could be to "Render" already to string, but not collapse the error effect
 
 -}
 program'' :: String -> IO ()
